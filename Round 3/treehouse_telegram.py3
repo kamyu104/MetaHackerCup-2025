@@ -9,18 +9,18 @@
 
 def treehouse_telegram():
     def build_hld(adj):
-        parent, depth, size, heavy, head, pos = [-1]*len(adj), [0]*len(adj), [1]*len(adj), [-1]*len(adj), list(range(len(adj))), [0]*len(adj)
-        stk = [(0, 0, -1)]
+        parent, depth, size, heavy, head, pos = [-1]*len(adj), [0]*len(adj), [1]*len(adj), [-1]*len(adj), list(range(len(adj))), [-1]*len(adj)
+        stk = [(1, 0, -1)]
         while stk:
             step, u, p = stk.pop()
-            if step == 0:
+            if step == 1:
                 parent[u], depth[u] = p, (depth[p]+1 if p != -1 else 0)
-                stk.append((1, u, p))
+                stk.append((2, u, p))
                 for v in adj[u]:
                     if v == p:
                         continue
-                    stk.append((0, v, u))
-            elif step == 1:
+                    stk.append((1, v, u))
+            elif step == 2:
                 for v in adj[u]:
                     if v == parent[u]:
                         continue
@@ -37,7 +37,7 @@ def treehouse_telegram():
                 if v == parent[u] or v == heavy[u]:
                     continue
                 stk.append((v, v))
-            if heavy[u] >= 0:
+            if heavy[u] != -1:
                 stk.append((heavy[u], h))
         return parent, depth, head, pos
 
